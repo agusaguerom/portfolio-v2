@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+
 interface Props {
   title: string;
   description: string;
@@ -18,8 +20,15 @@ const { title, description, imageUrl, tags = ["Tech", "Dev"], projectUrl, github
     
     <div class="card-inner">
       <div class="image-section">
-        <img src={imageUrl} alt={title} />
-        <div class="image-overlay"></div>
+<Image 
+      src={imageUrl} 
+      alt="Captura de la plataforma Lectana" 
+      width={800} 
+      height={450}
+      format="webp"
+      quality="mid"
+      class="project-image"
+    />        <div class="image-overlay"></div>
         <div class="tag-container">
           {tags.map(tag => <span class="tag">{tag}</span>)}
         </div>

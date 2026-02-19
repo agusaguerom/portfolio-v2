@@ -18,15 +18,15 @@
     <!-- Nav links -->
     <nav aria-label="Navegación principal">
       <ul class="nav-links">
-        <li><a href="#sobre-mi">Sobre mí</a></li>
-        <li><a href="#proyectos" class="active">Proyectos</a></li>
+        <li><a href="#hero">Sobre mí</a></li>
+        <li><a href="#projects">Proyectos</a></li>
         <li><a href="#habilidades">Skills</a></li>
-        <li><a href="#contacto">Contacto</a></li>
+        <li><a href="#contact">Contacto</a></li>
       </ul>
     </nav>
 
     <!-- CTA -->
-    <a href="mailto:tu@email.com" class="btn-cta">Hablemos →</a>
+    <a href="#contact" class="btn-cta">Hablemos →</a>
 
     <!-- Hamburger mobile -->
     <button class="hamburger" aria-label="Abrir menú">
@@ -36,10 +36,39 @@
     </button>
   </header>
 
+  <script>
+  const observerOptions = {
+    root: null,
+    rootMargin: '-20% 0px -70% 0px', // Detecta la sección cuando está en la parte superior
+    threshold: 0
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Buscamos todos los links
+        const navLinks = document.querySelectorAll('.nav-links a');
+        
+        navLinks.forEach(link => {
+          // Si el href del link coincide con el id de la sección visible
+          link.classList.toggle('active', 
+            link.getAttribute('href') === `#${entry.target.id}`
+          );
+        });
+      }
+    });
+  }, observerOptions);
+
+  // Observamos todas las secciones que tengan un ID
+  document.querySelectorAll('section[id]').forEach(section => {
+    observer.observe(section);
+  });
+</script>
   <style>
    
 
     /* ── NAVBAR ── */
+    
     .navbar {
       position: fixed;
       top: 0;

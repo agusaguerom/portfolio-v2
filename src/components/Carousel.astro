@@ -1,49 +1,44 @@
 ---
 import Card from './Cards.astro';
+import lectanaLightImg from '../assets/lectana-light.webp';
+import lectanaDarkImg from '../assets/lectana-dark.webp';
+import SistemaInmobiliarioImg from '../assets/SistemaInmobiliario.png';
+import gameStopImg from '../assets/gameStop.png';
+import vinculoPositivoImg from '../assets/vinculoPositivo.png';
 
 const projects = [
   { 
-    title: "Neural Interface", 
-    desc: "Visualización de datos biométricos en tiempo real con latencia cero.", 
-    tags: ["Rust", "WASM"],
-    imageUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
-    projectUrl: "https://neural-interface.demo",
-    githubUrl: "https://github.com/user/neural",
+    title: "Lectana", 
+    desc: "Plataforma educativa digital que transforma la gestión de lectura y el aprendizaje en la escuela primaria y secundaria. Aprovecha la gamificación, la automatización (audiolibros TTS) y un sistema de gestión de aulas para mejorar el progreso de los estudiantes. ", 
+    tags: ["NodeJS", "Express", "Supabase", "JWT"],
+    imageUrl: lectanaLightImg,
+    projectUrl: "https://lectana.vercel.app/",
+    githubUrl: "https://github.com/tomiiroma/lectana-backend",
     docsUrl: "https://docs.neural.com"
   },
   { 
-    title: "Crypto Engine", 
-    desc: "Motor de ejecución de contratos inteligentes optimizado para alta disponibilidad.", 
-    tags: ["Solidity", "Go"],
-    imageUrl: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=800",
-    githubUrl: "https://github.com/user/crypto-engine",
-    // Sin docs ni web
+    title: "Sistema de Gestion Inmobiliario", 
+    desc: "Este proyecto es un sistema de gestión desarrollado en Java para una inmobiliaria, diseñado para gestionar propiedades, clientes, transacciones y otros aspectos relacionados con la operación de una inmobiliaria.", 
+    tags: ["Java", "MySQL", "Swing"],
+    imageUrl: SistemaInmobiliarioImg,
+    githubUrl: "https://github.com/tomiiroma/Tp_Gestor_Inmobiliaria",
+    docsUrl : "https://github.com/tomiiroma/Tp_Gestor_Inmobiliaria/blob/main/README.md"
   },
   { 
-    title: "Mesh Network", 
-    desc: "Protocolo descentralizado P2P resistente a la censura y análisis de tráfico.", 
-    tags: ["P2P", "Libp2p"],
-    imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800",
-    projectUrl: "https://mesh.net",
-    githubUrl: "https://github.com/user/mesh"
+    title: "GameStop App", 
+    desc: "Aplicación Móvil que permite gestionar los productos de la Tienda GameStop. Desarrollado con Java en Android Studio y contando con base de datos SQLite", 
+    tags: ["Java", "SQLite", "Android"],
+    imageUrl: gameStopImg,
+    githubUrl: "https://github.com/agusaguerom/TP2-Android",
     // Sin docs
   },
   { 
-    title: "Cloud Terminal", 
-    desc: "Gestión de infraestructura remota mediante terminal web inmersiva.", 
-    tags: ["Next.js", "Docker"],
-    imageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc4b?q=80&w=800",
-    projectUrl: "https://cloud-term.sh",
-    docsUrl: "https://docs.cloud-term.sh"
+    title: "Vinculo Positivo", 
+    desc: "Vínculo Positivo conecta pacientes con psicólogos de forma simple y segura. Con gestion de turnos horarios y pacientes para los profesionales.", 
+    tags: ["NodeJS", "Express", "PostgreSQL", "JWT"],
+    imageUrl: vinculoPositivoImg,
+    projectUrl: "https://vinculo-positivo.vercel.app/",
     // Sin GitHub (Repo privado)
-  },
-  { 
-    title: "Quantum Ops", 
-    desc: "Simulación de cómputo cuántico avanzado para optimización de logística.", 
-    tags: ["Python", "Qiskit"],
-    imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800",
-    docsUrl: "https://quantum-ops.io/whitepaper"
-    // Solo documentación (Whitepaper)
   }
 ];
 ---

@@ -1,0 +1,142 @@
+---
+// Importamos la variable de entorno para el ID
+const FORMSPREE_ID = import.meta.env.PUBLIC_FORMSPREE_ID;
+---
+
+<section class="contact-section" id="contact">
+  <div class="contact-header">
+    <span class="code-label">// GET_IN_TOUCH</span>
+    <h2>Ponte en <span class="accent">Contacto</span></h2>
+  </div>
+
+  <div class="terminal-container">
+    <div class="terminal-header">
+      <div class="dots">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="terminal-title">contact_protocol.exe</div>
+    </div>
+
+    <form 
+      id="contact-form"
+      action={`https://formspree.io/f/${FORMSPREE_ID}`} 
+      method="POST" 
+      class="terminal-form"
+    >
+      <input type="text" name="_gotcha" style="display:none" />
+
+      <div class="input-group">
+        <label for="name">NOMBRE</label>
+        <input type="text" id="name" name="name" placeholder="Escribe tu nombre..." required />
+      </div>
+
+      <div class="input-group">
+        <label for="email">EMAIL:</label>
+        <input type="email" id="email" name="email" placeholder="tu@email.com" required />
+      </div>
+
+      <div class="input-group">
+        <label for="message">MENSAJE:</label>
+        <textarea id="message" name="message" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
+      </div>
+
+      <div class="form-footer">
+        <div class="status-bot">
+          <span class="pulse-dot" id="status-dot"></span>
+          <span id="form-status">LISTO PARA TRANSMISIÓN</span>
+        </div>
+        <button type="submit" id="submit-btn" class="submit-btn">
+          ENVIAR()
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<style>
+  /* Mantenemos tus estilos originales, solo añadimos/ajustamos estos: */
+  .contact-section { padding: 100px 20px; max-width: 800px; margin: 0 auto; }
+  .contact-header { text-align: center; margin-bottom: 50px; }
+  .code-label { font-family: monospace; color: var(--muted); letter-spacing: 3px; font-size: 0.7rem; }
+  h2 { font-size: 3rem; color: var(--text); }
+  .accent { color: var(--accent); text-shadow: 0 0 15px var(--accent); }
+
+  .terminal-container { background: #0a0707; border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+  .terminal-header { background: var(--surface); padding: 12px 20px; display: flex; align-items: center; border-bottom: 1px solid var(--border); }
+  .dots span { width: 10px; height: 10px; border-radius: 50%; background: var(--border); display: inline-block; margin-right: 5px; }
+  .terminal-title { margin-left: 20px; font-family: monospace; font-size: 0.8rem; color: var(--muted); }
+
+  .terminal-form { padding: 30px; }
+  .input-group { margin-bottom: 25px; }
+  .input-group label { display: block; font-family: monospace; color: var(--accent); font-size: 0.8rem; margin-bottom: 10px; }
+  .input-group input, .input-group textarea {
+    width: 100%; background: rgba(255, 60, 60, 0.02); border: 1px solid var(--border);
+    border-radius: 6px; padding: 12px; color: var(--text); font-family: 'Inter', sans-serif;
+    outline: none; transition: 0.3s;
+  }
+  .input-group input:focus, .input-group textarea:focus { border-color: var(--accent); background: rgba(255, 60, 60, 0.05); }
+
+  .form-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .status-bot { display: flex; align-items: center; gap: 10px; font-family: monospace; font-size: 0.75rem; color: var(--muted); min-width: 280px; }
+  .pulse-dot { width: 8px; height: 8px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88; animation: pulse 1.5s infinite; }
+
+  .submit-btn { background: var(--accent); color: white; border: none; padding: 12px 25px; font-family: monospace; font-weight: bold; border-radius: 4px; cursor: pointer; transition: 0.3s; }
+  .submit-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 0 20px var(--accent); }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+</style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const statusText = document.getElementById('form-status');
+  const statusDot = document.getElementById('status-dot');
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!statusText || !statusDot || !submitBtn) return;
+
+    // UI: Estado enviando
+    statusText.innerText = "CIFRANDO_DATOS...";
+    submitBtn.disabled = true;
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (response.ok) {
+        // UI: Éxito
+        statusText.innerText = "TRANSMISIÓN_COMPLETA_OK";
+        statusText.style.color = "#00ff88";
+        statusDot.style.background = "#00ff88";
+        statusDot.style.boxShadow = "0 0 10px #00ff88";
+        form.reset();
+      } else {
+        throw new Error();
+      }
+    } catch (err) {
+      // UI: Error
+      statusText.innerText = "ERROR_DE_CONEXIÓN_TCP";
+      statusText.style.color = "var(--accent)";
+      statusDot.style.background = "var(--accent)";
+      statusDot.style.boxShadow = "0 0 10px var(--accent)";
+      submitBtn.disabled = false;
+    } finally {
+      // Resetear estado después de unos segundos
+      setTimeout(() => {
+        if (statusText.innerText !== "LISTO PARA TRANSMISIÓN") {
+          statusText.innerText = "LISTO PARA TRANSMISIÓN";
+          statusText.style.color = "";
+          statusDot.style.background = "#00ff88";
+          submitBtn.disabled = false;
+        }
+      }, 5000);
+    }
+  });
+</script>

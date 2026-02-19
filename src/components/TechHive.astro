@@ -1,0 +1,188 @@
+---
+const technologies = [
+  // La clásica taza de café de Java
+  { name: "Java", icon: "https://skillicons.dev/icons?i=java" }, 
+  { name: "Spring Boot", icon: "https://skillicons.dev/icons?i=spring" },
+  { name: "Node.js", icon: "https://skillicons.dev/icons?i=nodejs" },
+  { name: "Express", icon: "https://skillicons.dev/icons?i=express" },
+  { name: "React", icon: "https://skillicons.dev/icons?i=react" },
+  { name: "PostgreSQL", icon: "https://skillicons.dev/icons?i=postgres" },
+  { name: "MySQL", icon: "https://skillicons.dev/icons?i=mysql" },
+  { name: "SQLite", icon: "https://skillicons.dev/icons?i=sqlite" },
+  { name: "Git", icon: "https://skillicons.dev/icons?i=git" },
+  { name: "GitHub", icon: "https://skillicons.dev/icons?i=github" },
+];
+---
+
+<section class="tech-section" id="habilidades">
+  <div class="tech-header">
+    <span class="code-label">// MY_SKILLS</span>
+    <h2>Habilidades <span class="accent">Tecnicas</span></h2>
+  </div>
+
+  <div class="hive-wrapper">
+    <div class="hive-grid">
+      {technologies.map((tech, index) => (
+        <div class="tech-cell" style={`--delay: ${index * 0.2}s; --duration: ${3 + (index % 3)}s;`}>
+          <div class="cell-content">
+            <div class="icon-box">
+              <img src={tech.icon} alt={tech.name} />
+            </div>
+            <span class="tech-label">{tech.name}</span>
+            <div class="scan-line"></div>
+          </div>
+          <div class="cell-glow"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .tech-section {
+    padding: 100px 20px;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .tech-header {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+
+  .code-label {
+    font-family: monospace;
+    color: var(--muted);
+    letter-spacing: 4px;
+    font-size: 0.7rem;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  h2 { font-size: 3rem; font-weight: 800; color: var(--text); }
+  .accent { color: var(--accent); text-shadow: 0 0 20px rgba(232, 59, 59, 0.4); }
+
+  .hive-wrapper {
+    display: flex;
+    justify-content: center;
+    perspective: 1000px;
+  }
+
+  .hive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 40px;
+    width: 100%;
+    justify-items: center;
+  }
+
+  /* --- Estructura de la Celda --- */
+  .tech-cell {
+    position: relative;
+    width: 180px;
+    height: 200px;
+    /* Animación de flotación individual */
+    animation: float var(--duration) ease-in-out var(--delay) infinite;
+  }
+
+  .cell-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(20, 10, 10, 0.8) 0%, rgba(10, 5, 5, 0.9) 100%);
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 2;
+    backdrop-filter: blur(10px);
+  }
+
+  /* --- Animación de Flotación --- */
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    33% { transform: translateY(-10px) rotate(1deg); }
+    66% { transform: translateY(5px) rotate(-1deg); }
+  }
+
+  .icon-box {
+    width: 70px;
+    height: 70px;
+    transition: transform 0.5s ease;
+  }
+
+  .icon-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 8px rgba(232, 59, 59, 0.2));
+  }
+
+  .tech-label {
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+  }
+
+  /* --- Efectos Interactivos --- */
+  .tech-cell:hover {
+    animation-play-state: paused; /* Se detiene al interactuar */
+  }
+
+  .tech-cell:hover .cell-content {
+    border-color: var(--accent);
+    transform: scale(1.1) translateZ(30px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  }
+
+  .tech-cell:hover .tech-label {
+    color: var(--text);
+    text-shadow: 0 0 10px var(--accent);
+  }
+
+  .tech-cell:hover .icon-box {
+    transform: scale(1.15) rotate(5deg);
+  }
+
+  /* Brillo de fondo */
+  .cell-glow {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    filter: blur(40px);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    z-index: 1;
+  }
+
+  .tech-cell:hover .cell-glow {
+    opacity: 0.2;
+  }
+
+  /* Efecto de línea de escaneo sutil */
+  .scan-line {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(232, 59, 59, 0.05),
+      transparent
+    );
+    transition: none;
+  }
+
+  .tech-cell:hover .scan-line {
+    animation: scan 1.5s linear infinite;

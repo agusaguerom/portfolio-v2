@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Agustin Aguero</title>
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style>
+   *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+        --bg: #0e0a0a;
+        --surface: rgba(255, 60, 60, 0.06);
+        --border: rgba(255, 80, 80, 0.10);
+        --text: #f5eeee;
+        --muted: rgba(245, 220, 220, 0.45);
+        --accent: #e83b3b;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', sans-serif;
+      --nav-height: 72px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      min-height: 100vh;
+    }
+    
+</style>

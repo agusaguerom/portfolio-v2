@@ -1,0 +1,255 @@
+---
+import Card from './Cards.astro';
+
+const projects = [
+  { 
+    title: "Neural Interface", 
+    desc: "Visualización de datos biométricos en tiempo real con latencia cero.", 
+    tags: ["Rust", "WASM"],
+    imageUrl: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800",
+    projectUrl: "https://neural-interface.demo",
+    githubUrl: "https://github.com/user/neural",
+    docsUrl: "https://docs.neural.com"
+  },
+  { 
+    title: "Crypto Engine", 
+    desc: "Motor de ejecución de contratos inteligentes optimizado para alta disponibilidad.", 
+    tags: ["Solidity", "Go"],
+    imageUrl: "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?q=80&w=800",
+    githubUrl: "https://github.com/user/crypto-engine",
+    // Sin docs ni web
+  },
+  { 
+    title: "Mesh Network", 
+    desc: "Protocolo descentralizado P2P resistente a la censura y análisis de tráfico.", 
+    tags: ["P2P", "Libp2p"],
+    imageUrl: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=800",
+    projectUrl: "https://mesh.net",
+    githubUrl: "https://github.com/user/mesh"
+    // Sin docs
+  },
+  { 
+    title: "Cloud Terminal", 
+    desc: "Gestión de infraestructura remota mediante terminal web inmersiva.", 
+    tags: ["Next.js", "Docker"],
+    imageUrl: "https://images.unsplash.com/photo-1558494949-ef010cbdcc4b?q=80&w=800",
+    projectUrl: "https://cloud-term.sh",
+    docsUrl: "https://docs.cloud-term.sh"
+    // Sin GitHub (Repo privado)
+  },
+  { 
+    title: "Quantum Ops", 
+    desc: "Simulación de cómputo cuántico avanzado para optimización de logística.", 
+    tags: ["Python", "Qiskit"],
+    imageUrl: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=800",
+    docsUrl: "https://quantum-ops.io/whitepaper"
+    // Solo documentación (Whitepaper)
+  }
+];
+---
+
+<div class="cyber-carousel">
+  <div class="carousel-stage">
+    <div class="carousel-track">
+      {projects.map((p) => (
+        <div class="carousel-item">
+       <Card 
+            title={p.title} 
+            description={p.desc} 
+            imageUrl={p.imageUrl} 
+            tags={p.tags}
+            projectUrl={p.projectUrl}
+            githubUrl={p.githubUrl}
+            docsUrl={p.docsUrl}
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="carousel-ui">
+    <button id="prevBtn" class="nav-btn">/PREV_</button>
+    <div class="pagination">
+      <span id="currentIdx">01</span>
+      <span class="separator">/</span>
+      <span>{projects.length.toString().padStart(2, '0')}</span>
+    </div>
+    <button id="nextBtn" class="nav-btn">_NEXT/</button>
+  </div>
+</div>
+
+<script>
+  // Función para inicializar el carrusel
+  function setupCarousel() {
+    const track = document.querySelector('.carousel-track');
+    const items = document.querySelectorAll('.carousel-item');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const currentText = document.getElementById('currentIdx');
+
+    if (!items.length || !prevBtn || !nextBtn) return;
+
+    let index = 0;
+
+    function updateCarousel() {
+      items.forEach((item, i) => {
+        // Limpiamos todas las clases posibles
+        item.classList.remove('active', 'prev', 'next', 'hidden-left', 'hidden-right');
+        
+        if (i === index) {
+          item.classList.add('active');
+        } else if (i === index - 1) {
+          item.classList.add('prev');
+        } else if (i === index + 1) {
+          item.classList.add('next');
+        } else if (i < index) {
+          item.classList.add('hidden-left');
+        } else {
+          item.classList.add('hidden-right');
+        }
+      });
+
+      // Actualizar número de paginación
+      if (currentText) {
+        currentText.innerText = (index + 1).toString().padStart(2, '0');
+      }
+
+      // Deshabilitar botones en los límites
+      (prevBtn as HTMLButtonElement).disabled = index === 0;
+      (nextBtn as HTMLButtonElement).disabled = index === items.length - 1;
+      
+      // Estilo visual de botón deshabilitado
+      prevBtn.style.opacity = index === 0 ? "0.3" : "1";
+      nextBtn.style.opacity = index === items.length - 1 ? "0.3" : "1";
+    }
+
+    nextBtn.addEventListener('click', () => {
+      if (index < items.length - 1) {
+        index++;
+        updateCarousel();
+      }
+    });
+
+    prevBtn.addEventListener('click', () => {
+      if (index > 0) {
+        index--;
+        updateCarousel();
+      }
+    });
+
+    // Estado inicial
+    updateCarousel();
+  }
+
+  // Ejecutar en la carga inicial y cuando Astro cambie de página (si usas View Transitions)
+  setupCarousel();
+  document.addEventListener('astro:after-swap', setupCarousel);
+</script>
+
+<style>
+  .cyber-carousel {
+    width: 100%;
+    max-width: 1400px;
+    margin: 60px auto;
+    perspective: 2000px; /* Aumentado para mejor efecto 3D */
+    overflow: hidden;
+    padding: 40px 0;
+  }
+
+  .carousel-stage {
+    position: relative;
+    height: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform-style: preserve-3d;
+  }
+
+  .carousel-track {
+    position: relative;
+    width: 350px;
+    height: 100%;
+    transform-style: preserve-3d;
+  }
+
+  .carousel-item {
+    position: absolute;
+    inset: 0;
+    transition: all 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  /* --- ESTADOS 3D CORREGIDOS --- */
+
+  .carousel-item.active {
+    opacity: 1;
+    transform: translateZ(200px) translateX(0);
+    z-index: 10;
+    pointer-events: all;
+  }
+
+  .carousel-item.prev {
+    opacity: 0.4;
+    transform: translateX(-105%) translateZ(-300px) rotateY(35deg);
+    z-index: 5;
+    filter: blur(4px) grayscale(1);
+  }
+
+  .carousel-item.next {
+    opacity: 0.4;
+    transform: translateX(105%) translateZ(-300px) rotateY(-35deg);
+    z-index: 5;
+    filter: blur(4px) grayscale(1);
+  }
+
+  .carousel-item.hidden-left {
+    transform: translateX(-150%) translateZ(-500px) rotateY(45deg);
+    opacity: 0;
+  }
+
+  .carousel-item.hidden-right {
+    transform: translateX(150%) translateZ(-500px) rotateY(-45deg);
+    opacity: 0;
+  }
+
+  /* --- UI --- */
+
+  .carousel-ui {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 20px;
+  }
+
+  .nav-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-family: monospace;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: bold;
+  }
+
+  .nav-btn:not(:disabled):hover {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 0 20px var(--accent);
+  }
+
+  .pagination {
+    font-family: monospace;
+    font-size: 1.2rem;
+    color: var(--text);
+    min-width: 80px;
+    text-align: center;
+  }
+
+  .separator {
+    color: var(--accent);
+    margin: 0 5px;
+  }
+</style>
